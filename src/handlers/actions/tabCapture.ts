@@ -1,5 +1,8 @@
 import { ActionsHandler } from "../../typings/MessageType";
 
+// Check if we're running in Firefox (no offscreen API support)
+const isFirefox = typeof chrome.offscreen === 'undefined';
+
 type startTabCapturePayload = {
     tab?: chrome.tabs.Tab;
     tabId?: number;
@@ -35,6 +38,11 @@ const closeSidePanel: ActionsHandler = async (_: any, _sender?: chrome.runtime.M
 };
 
 const startTabCapture: ActionsHandler = async ({ tab, tabId, windowId, shouldOpenSidePanel }: startTabCapturePayload, sender?: chrome.runtime.MessageSender) => {
+
+    // Firefox does not support chrome.offscreen API - audio capture not available
+    if (isFirefox) {
+        return Promise.reject('Audio capture is not available in Firefox. This feature is Chrome-only.');
+    }
 
     return new Promise(async (resolve, reject) => {
        

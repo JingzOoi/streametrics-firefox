@@ -19,6 +19,8 @@
     "build:vite": "vite build",
     "build:css": "npx tailwindcss -i ./src/input.css -o ./dist/css/output.css --minify",
     "build:fast": "tsc -b --incremental && vite build",
+    "build:firefox": "cp public/manifest.firefox.json public/manifest.json && npm run build:tsc && npm run build:vite && npm run build:css",
+    "build:chrome": "cp public/manifest.json public/manifest.json.bak && cp public/manifest.chrome.json public/manifest.json 2>/dev/null; npm run build:tsc && npm run build:vite && npm run build:css; mv public/manifest.json.bak public/manifest.json 2>/dev/null || true",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test:browser": "vitest --workspace=vitest.workspace.ts"
